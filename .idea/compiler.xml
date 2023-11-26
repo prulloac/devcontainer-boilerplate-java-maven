@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="crud-rest-api" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="api-layer" target="21" />
+      <module name="crud-rest-api-demo" target="21" />
+      <module name="dto-layer" target="21" />
+      <module name="parent-pom" target="21" />
+      <module name="repository-layer" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="api-layer" options="-parameters" />
+      <module name="crud-rest-api" options="-parameters" />
+      <module name="crud-rest-api-demo" options="-parameters" />
+      <module name="dto-layer" options="-parameters" />
+    </option>
+  </component>
+</project>

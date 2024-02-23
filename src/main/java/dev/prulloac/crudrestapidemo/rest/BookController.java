@@ -1,7 +1,9 @@
 package dev.prulloac.crudrestapidemo.rest;
 
+import dev.prulloac.crudrestapidemo.dto.BookRecord;
 import dev.prulloac.crudrestapidemo.exceptions.BookNotFoundException;
 import dev.prulloac.crudrestapidemo.model.Book;
+import dev.prulloac.crudrestapidemo.repository.AuthorRepository;
 import dev.prulloac.crudrestapidemo.repository.BookRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -24,6 +26,8 @@ public class BookController {
 
     @Autowired
     private BookRepository repository;
+    @Autowired
+    private AuthorRepository authorRepository;
 
     @Operation(summary = "Get a book by its id")
     @ApiResponses(value = {
@@ -35,25 +39,30 @@ public class BookController {
             @ApiResponse(responseCode = "404", description = "Book not found",
                     content = @Content) })
     @GetMapping("/{id}")
-    public Book findById(@Parameter(description = "id of book to be searched")
+    public BookRecord findById(@Parameter(description = "id of book to be searched")
                          @PathVariable long id) {
-        return repository.findById(id).orElseThrow(BookNotFoundException::new);
+        Book book = repository.findById(id).orElseThrow(BookNotFoundException::new);
+        return new BookRecord(book.getId(), book.getTitle(), book.getAuthor().getName(), book.getIsbn());
     }
 
     @GetMapping("/")
-    public Collection<Book> findBooks() {
-        return repository.findAll();
+    public Collection<BookRecord> findBooks() {
+        return repository.findAll().stream().map(book -> new BookRecord(book.getId(), book.getTitle(), book.getAuthor().getName(), book.getIsbn())).toList();
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Book updateBook(
-            @PathVariable("id") final String id, @RequestBody final Book book) {
-        return repository.save(book);
+    public BookRecord updateBook(
+            @PathVariable("id") final String id, @RequestBody final BookRecord book) {
+        Book existingBook = repository.findById(Long.parseLong(id)).orElseThrow(BookNotFoundException::new);
+        existingBook.setTitle(book.getTitle());
+        existingBook.setIsbn(book.getIsbn());
+        existingBook.setAuthor(authorRepository.findByName(book.getAuthor()).orElseThrow());
+        return new BookRecord(repository.save(existingBook).getId(), existingBook.getTitle(), existingBook.getAuthor().getName(), existingBook.getIsbn());
     }
 
     @GetMapping("/filter")
-    public Page<Book> filterBooks(@ParameterObject Pageable pageable) {
-        return repository.findAll(pageable);
+    public Page<BookRecord> filterBooks(@ParameterObject Pageable pageable) {
+        return repository.findAll(pageable).map(book -> new BookRecord(book.getId(), book.getTitle(), book.getAuthor().getName(), book.getIsbn()));
     }
 }

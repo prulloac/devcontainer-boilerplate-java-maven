@@ -1,0 +1,20 @@
+name: CI Build
+
+on:
+  push:
+    branches:
+      - '**'
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Pre-build dev container image
+        uses: devcontainers/ci@v0.3
+        with:
+          imageName: ghcr.io/prulloac/java-maven-springboot
+          cacheFrom: ghcr.io/prulloac/java-maven-springboot
+          runCmd: |
+            mvn clean install

@@ -24,7 +24,9 @@
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"vmware.vscode-boot-dev-pack"
+				"vmware.vscode-boot-dev-pack",
+				"github.vscode-github-actions",
+				"GitHub.copilot"
 			]
 		}
 	}

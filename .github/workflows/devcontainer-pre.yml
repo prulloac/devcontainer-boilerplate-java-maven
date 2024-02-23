@@ -1,0 +1,20 @@
+name: Pre-build dev container image
+
+on: # rebuild any PRs and main branch changes
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Pre-build dev container image
+        uses: devcontainers/ci@v0.3
+        with:
+          imageName: ghcr.io/prulloac/java-maven-springboot
+          cacheFrom: ghcr.io/prulloac/java-maven-springboot
+          push: always

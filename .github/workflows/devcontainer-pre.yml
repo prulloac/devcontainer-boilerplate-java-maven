@@ -12,6 +12,7 @@ on: # rebuild any PRs and main branch changes
 
 jobs:
   build:
+    name: Build and Push Dev Container Image
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

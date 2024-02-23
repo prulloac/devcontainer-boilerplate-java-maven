@@ -1,0 +1,45 @@
+name: "Pull Request Labeler and Assigner"
+on:
+- pull_request_target
+
+jobs:
+  labeler_1:
+    name: "Label the PR by Regex"
+    permissions:
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4 
+    - uses: actions/labeler@v5
+  labeler_2:
+    name: "Label the PR by Diff"
+    permissions:
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4 
+    - name: size-label
+      uses: "pascalgn/size-label-action@v0.4.2"
+      env:
+        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      with:
+        sizes: >
+          {
+            "0": "XS",
+            "50": "S",
+            "20": "M",
+            "800": "L",
+            "2000": "XL",
+            "5000": "XXL"
+          }  
+  assigner:
+    name: "Assign the PR"
+    permissions:
+      contents: read
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: kentaro-m/auto-assign-action@v2.0.0

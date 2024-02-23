@@ -1,0 +1,25 @@
+# Add 'Documentation' label to any file changes within 'docs' or 'guides' folders
+documentation:
+- changed-files:
+  - any-glob-to-any-file: ['docs/**', 'guides/*', 'README.md']
+
+# Add 'source' label to any change to src files within the source dir EXCEPT for the docs sub-folder
+source:
+- all:
+  - changed-files:
+    - any-glob-to-any-file: 'src/**/*'
+    - all-globs-to-all-files: '!src/docs/*'
+
+# Add 'feature' label to any PR where the head branch name starts with `feature`
+feature:
+ - head-branch: ['^feature']
+
+# Add 'release' label to any PR that is opened against the `main` branch
+release:
+ - base-branch: 'main'
+
+# Add 'source' label to any change to src files within the source dir EXCEPT for the docs sub-folder
+workflow:
+- all:
+  - changed-files:
+    - any-glob-to-any-file: ['.github/workflows/*']

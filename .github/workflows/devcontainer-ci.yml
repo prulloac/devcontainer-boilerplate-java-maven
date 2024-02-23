@@ -17,5 +17,6 @@ jobs:
         with:
           imageName: ghcr.io/prulloac/java-maven-springboot
           cacheFrom: ghcr.io/prulloac/java-maven-springboot
+          push: "never"
           runCmd: |
             mvn clean install

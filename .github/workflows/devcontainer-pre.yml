@@ -7,6 +7,8 @@ on: # rebuild any PRs and main branch changes
       - main
     paths:
       - '.devcontainer/**'
+      - '.github/workflows/devcontainer-pre.yml'
+      - '.github/workflows/devcontainer-ci.yml'
 
 jobs:
   build:
